@@ -23,3 +23,8 @@ rm -fr hardware/xiaomi/interfaces/xiaomi/hardware/mfidoca/1.0
 
 # Rename conflicting qti_kernel_headers in source
 sed -i 's/"qti_kernel_headers"/"qti_kernel_headers_old"/g' vendor/lineage/build/soong/Android.bp
+
+# Sepolicy fix for imsrcsd
+echo -e "${color}Switch back to legacy imsrcsd sepolicy${end}"
+rm -rf device/qcom/sepolicy_vndr/legacy-um/qva/vendor/bengal/ims/imsservice.te
+cp device/qcom/sepolicy_vndr/legacy-um/qva/vendor/bengal/legacy-ims/hal_rcsservice.te device/qcom/sepolicy_vndr/legacy-um/qva/vendor/bengal/ims/hal_rcsservice.te
