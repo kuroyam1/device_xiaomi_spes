@@ -114,9 +114,11 @@ PRODUCT_PACKAGES += \
     libaudioroute \
     libaudioroute.vendor \
     libaudio-resampler \
+    libprocessgroup.vendor \
     libqcompostprocbundle \
     libqcomvisualizer \
     libqcomvoiceprocessing \
+    libstagefright_softomx_plugin.vendor \
     libtinycompress
 
 # Audio configs
