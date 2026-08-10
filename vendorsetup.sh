@@ -15,33 +15,11 @@ rm -rf hardware/lineage/compat/Android.bp
 # Clone kernel/vendortree/xiaomi-hardware
 echo -e "${color}Setup kernel,vendor,xiaomi-hardware tree ${end}"
 git clone --depth=1 https://github.com/muralivijay/kernel_xiaomi_sm6225.git -b main kernel/xiaomi/spes
-git clone --depth=1 https://github.com/muralivijay/android_vendor_xiaomi_spes.git -b 13.0 vendor/xiaomi/spes
-git clone --depth=1 https://github.com/LineageOS/android_hardware_xiaomi.git -b lineage-20 hardware/xiaomi
+git clone --depth=1 https://github.com/kuroyam1/vendor_xiaomi_spes.git -b 13.0 vendor/xiaomi/spes
+git clone https://github.com/LineageOS/android_hardware_xiaomi -b lineage-21 hardware/xiaomi
+rm -fr hardware/lineage/interfaces/health/aidl/default/Android.bp
+rm -fr hardware/xiaomi/interfaces/xiaomi/hardware/mtdservice/1.3
+rm -fr hardware/xiaomi/interfaces/xiaomi/hardware/mfidoca/1.0
 
-# GcamBSG
-echo -e "${color}Setup gcamBSG ${end}"
-read -p "Do you want to enable GCam support? (yes/no): " USER_INPUT
-
-if [[ "$USER_INPUT" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    export ENABLE_GCAM=true
-    echo "GCam support enabled."
-    echo "Cloning GCam source..."
-    git clone --depth=1 https://gitlab.com/GustavoMends/vendor_GoogleCamera.git -b sg vendor/GoogleCamera
-else
-    export ENABLE_GCAM=false
-    echo "GCam support disabled. Skipping or Removing if GCam source exits."
-    rm -rf vendor/GoogleCamera
-fi
-
-# Gapps
-echo -e "${color}Setup Gapps ${end}"
-read -p "Do you want to build with gapps support? (yes/no): " USER_INPUT
-
-if [[ "$USER_INPUT" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-    echo "Gapps support enabled."
-    echo "Cloning gapps source from crdroid gitlab..."
-    git clone --depth=1 https://gitlab.com/crdroidandroid/android-vendor-gapps-spes.git -b 13.0 vendor/gapps
-else
-    echo "Gapps support disabled. Skipping ..."
-    rm -rf vendor/gapps
-fi
+# Rename conflicting qti_kernel_headers in source
+sed -i 's/"qti_kernel_headers"/"qti_kernel_headers_old"/g' vendor/lineage/build/soong/Android.bp
