@@ -529,11 +529,9 @@ PRODUCT_PACKAGES += \
     vndservicemanager
 
 # Vibrator
-PRODUCT_PACKAGES += \
-    vendor.qti.hardware.vibrator.service
+$(call soong_config_set_bool, vibrator, vibratortargets, vibratoraidlV2target)
 
-PRODUCT_COPY_FILES += \
-    $(LOCAL_PATH)/configs/excluded-input-devices.xml:$(TARGET_COPY_OUT_VENDOR)/etc/excluded-input-devices.xml
+$(call inherit-product, vendor/qcom/opensource/vibrator/vibrator-vendor-product.mk)
 
 # VINTF Hacks
 PRODUCT_OTA_ENFORCE_VINTF_KERNEL_REQUIREMENTS := false
