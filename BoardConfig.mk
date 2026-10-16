@@ -277,8 +277,8 @@ BOARD_VNDK_VERSION := current
 
 # Sepolicy
 include device/qcom/sepolicy_vndr/legacy-um/SEPolicy.mk
-include device/lineage/sepolicy/libion/sepolicy.mk
-include device/lineage/sepolicy/libperfmgr/sepolicy.mk
+include device/voltage/sepolicy/libion/sepolicy.mk
+include device/voltage/sepolicy/libperfmgr/sepolicy.mk
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 ifdef CR_VERSION
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private-cr
