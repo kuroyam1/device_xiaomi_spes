@@ -354,11 +354,13 @@ PRODUCT_PACKAGES += \
     libstagefrighthw \
     libstagefright_omx.vendor
 
+# Stagefright
+$(call soong_config_set_bool,stagefright,target_use_legacy_mediacodecbuffer_setrange,true)
+$(call soong_config_set_bool,stagefright,target_restore_surface_generation_after_reconnect,true)
+
 PRODUCT_COPY_FILES += \
     $(call find-copy-subdir-files,*,$(LOCAL_PATH)/configs/media/,$(TARGET_COPY_OUT_VENDOR)/etc) \
     $(LOCAL_PATH)/configs/media/media_profiles.xml:$(TARGET_COPY_OUT_ODM)/etc/media_profiles_V1_0.xml
-    $(call soong_config_set_bool,stagefright,target_use_legacy_mediacodecbuffer_setrange,true)
-    $(call soong_config_set_bool,stagefright,target_restore_surface_generation_after_reconnect,true)
 
 PRODUCT_COPY_FILES += \
     frameworks/av/media/libstagefright/data/media_codecs_google_c2.xml:$(TARGET_COPY_OUT_VENDOR)/etc/media_codecs_google_c2.xml \
