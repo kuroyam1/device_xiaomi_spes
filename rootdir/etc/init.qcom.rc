@@ -81,6 +81,10 @@ on early-boot
     write /sys/devices/virtual/npu/msm_npu/boot 1
     write /sys/devices/virtual/cvp/cvp/boot 1
 
+    # qcrild opens its QMI clients at startup, so it must not run before the
+    # modem is online; the helper also boots both RIL instances.
+    start vendor.qcrild-wait
+
     chown system system /mnt/vendor/persist/data/pfm/licenses
     chmod 0775 /mnt/vendor/persist/data/pfm/licenses
     chown system system /mnt/vendor/persist/data/pfm/licenses/store_0
@@ -150,9 +154,9 @@ on boot
     # Create hvdcp_opti directory
     mkdir /mnt/vendor/persist/hvdcp_opti 0770 root system
 
-    # Enable qcrild and data services
-    enable vendor.qcrild
-    enable vendor.qcrild2
+    # Enable data services
+    # qcrild is started by vendor.qcrild-wait once the modem is online,
+    # see init.qcrild-wait.sh for the details.
     enable vendor.dataqti
     enable vendor.dataadpl
 
@@ -347,6 +351,16 @@ service vendor.qcom-sh /vendor/bin/init.qcom.sh
     class late_start
     user root
     group root system radio
+    oneshot
+
+# Waits for the modem to come online, then starts vendor.qcrild and
+# vendor.qcrild2. Runs in the QTI init shell domain, which is allowed to read
+# the msm_subsys sysfs state and to start services.
+service vendor.qcrild-wait /vendor/bin/init.qcrild-wait.sh
+    class core
+    user root
+    group root system radio
+    disabled
     oneshot
 
 service vendor.qcom-post-boot /vendor/bin/init.qcom.post_boot.sh

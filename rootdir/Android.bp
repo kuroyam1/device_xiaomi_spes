@@ -29,6 +29,12 @@ sh_binary {
     vendor: true,
 }
 
+sh_binary {
+    name: "init.qcrild-wait.sh",
+    src: "bin/init.qcrild-wait.sh",
+    vendor: true,
+}
+
 // Init configuration files
 prebuilt_etc {
     name: "init.qcom.power.rc",
