@@ -22,7 +22,7 @@ rm -fr hardware/xiaomi/interfaces/xiaomi/hardware/mfidoca/1.0
 # HALS
 echo -e "${color}cloning audio HAL ${end}"
 rm -rf hardware/qcom-caf/sm8250/audio
-git clone https://github.com/muralivijay/android_hardware_qcom_audio.git -b ultra hardware/qcom-caf/sm8250/audio
+git clone https://github.com/muralivijay/android_hardware_qcom_audio.git -b lineage-24.0-caf-sm8250 hardware/qcom-caf/sm8250/audio
 
 echo -e "${color}cloning display HAL ${end}"
 rm -rf hardware/qcom-caf/sm8250/display
@@ -33,5 +33,14 @@ echo -e "${color}Switch back to legacy imsrcsd sepolicy${end}"
 rm -rf device/qcom/sepolicy_vndr/legacy-um/qva/vendor/bengal/ims/imsservice.te
 cp device/qcom/sepolicy_vndr/legacy-um/qva/vendor/bengal/legacy-ims/hal_rcsservice.te device/qcom/sepolicy_vndr/legacy-um/qva/vendor/bengal/ims/hal_rcsservice.te
 
+# patchs
+echo -e "${color}apply patch to remove sounddose from audio interfaces ${end}"
+cp device/xiaomi/spes/patchs/0001-interfaces-kill-android.hardware.audio.sounddose-ven.patch hardware/interfaces
+cd hardware/interfaces && git apply 0001-interfaces-kill-android.hardware.audio.sounddose-ven.patch
+cd ../../
+
 # Rename conflicting qti_kernel_headers in source
 sed -i 's/"qti_kernel_headers"/"qti_kernel_headers_old"/g' vendor/voltage/build/soong/Android.bp
+
+# Disable Android Go
+sed -i '/PRODUCT_VENDOR_PROPERTIES += \\/,/ro.config.low_ram=true \\/d' build/target/product/go_defaults_common.mk
